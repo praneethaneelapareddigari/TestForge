@@ -1,7 +1,9 @@
-import pytest
-from ..module_a import add
+import sys
+import os
 
-def test_add_smoke():
-    res = add()
-    assert res is not None
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from sample_pkg.module_a import add
+
+def test_add():
+    assert add(2, 3) == 5
