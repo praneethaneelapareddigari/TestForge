@@ -1,0 +1,32 @@
+name: TestForge CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  testforge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+      - name: Generate tests (all languages)
+        run: python -m testforge generate all examples/sample_pkg
+      - name: Run Python generated tests
+        run: |
+          pip install pytest
+          pytest examples/sample_pkg/tests_generated -q
+      - name: Produce coverage XML
+        run: |
+          pip install coverage
+          coverage run -m pytest examples/sample_pkg/tests_generated -q || true
+          coverage xml -i
+      - name: Quality gate
+        run: python -m testforge quality-gate --min 0.92
