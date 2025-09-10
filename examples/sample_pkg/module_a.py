@@ -1,5 +1,3 @@
-from _future_ import annotations
-
 def add(a: int | float, b: int | float) -> int | float:
     return a + b
 
@@ -12,5 +10,6 @@ def hello() -> str:
 class Greeter:
     def _init_(self, prefix: str = "Hello") -> None:
         self.prefix = prefix
+
     def greet(self, name: str) -> str:
-        return f"{self.prefix}, {name}!"
+        return f"{self.prefix},{name}!"
