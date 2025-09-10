@@ -1,8 +1,11 @@
-import pytest
-from ..module_a import Greeter  # relative import from the package
+import sys
+import os
 
-def test_Greeter_smoke():
-    greeter = Greeter()         # create an instance
-    res = greeter.greet()       # call the greet() method
-    assert res is not None       # simple smoke test
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from sample_pkg.module_a import greet
+
+def test_greet():
+    assert greet("Praneetha") == "Hello, Praneetha!"
+
 
