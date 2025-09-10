@@ -12,4 +12,8 @@ class Greeter:
         self.prefix = prefix
 
     def greet(self, name: str) -> str:
-        return f"{self.prefix},{name}!"
+        return f"{self.prefix}, {name}!"
+
+    def hello(self) -> str:
+        # test expects this to return "hello" (all lowercase)
+        return "hello"
