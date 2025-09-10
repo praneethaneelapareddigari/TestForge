@@ -1,9 +1,14 @@
-def hello():
-    return "hi"
-
-def add(a=1, b=2):
-    return a + b
+# module_a.py
 
 class Greeter:
-    def greet(self):
-        return "hello"
+    def __init__(self, name):
+        self.name = name
+
+def add(a, b):
+    return a + b
+
+def greet(name):
+    return f"Hello, {name}!"
+
+def hello():
+    return "Hello!"

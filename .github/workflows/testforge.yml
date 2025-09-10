@@ -7,11 +7,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # Support BOTH import styles:
-    #  - from module_a import ...
-    #  - from sample_pkg.module_a import ...
-    env:
-      PYTHONPATH: ${{ github.workspace }}/examples:${{ github.workspace }}/examples/sample_pkg
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,31 +20,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # install our sample package if using the packaged layout
+          if [ -f examples/sample_pkg/pyproject.toml ]; then pip install -e examples/sample_pkg; fi
           pip install pytest
 
-      - name: Debug import path
-        shell: bash
-        run: |
-          python - <<'PY'
-          import os, sys
-          print("ENV PYTHONPATH =", os.environ.get("PYTHONPATH"))
-          print("sys.path:\n", "\n".join(sys.path))
-          def try_import(mod):
-              try:
-                  m = _import_(mod)
-                  print(f"OK: {mod} ->", m._file_)
-              except Exception as e:
-                  print(f"FAIL: {mod} ->", repr(e))
-          try_import("module_a")
-          try:
-              import sample_pkg.module_a as ma
-              print("OK: sample_pkg.module_a ->", ma._file_)
-          except Exception as e:
-              print("FAIL: sample_pkg.module_a ->", repr(e))
-          PY
-
       - name: Run tests
-        shell: bash
-        run: |
-          export PYTHONPATH="${PYTHONPATH}"
-          python -m pytest -q examples/sample_pkg/tests_generated
+        run: python -m pytest -q examples/sample_pkg/tests_generated
