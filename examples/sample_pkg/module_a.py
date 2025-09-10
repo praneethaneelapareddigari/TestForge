@@ -15,5 +15,5 @@ class Greeter:
         return f"{self.prefix}, {name}!"
 
     def hello(self) -> str:
-        # test expects this to return "hello" (all lowercase)
+        # tests expect lowercase "hello"
         return "hello"
